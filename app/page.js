@@ -169,7 +169,11 @@ export default function Home() {
           key={index}
         >{'\n'}</Text>;
       return (
-        <Text>
+        <Text
+          key={
+            index * index
+          }
+        >
           {
             //Split the line into an array
             line.split(' ').map((word, index) => {
