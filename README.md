@@ -1,6 +1,7 @@
 ### ReadFaster: read text faster using “bold”.
 
-![ReadFaster](https://github.com/RiccardoZuninoJ/ReadFaster/assets/86408279/74a25ded-eeb9-44af-a76d-b6657dcba7d0)
+![ReadFaster](https://github.com/RiccardoZuninoJ/ReadFaster/assets/86408279/8ddbff3e-eadf-47e5-9f5e-f0f645653810)
+
 
 ### Use the tool
 [readfaster.riccardozunino.ninja](https://readfaster.riccardozuninoj.ninja)
