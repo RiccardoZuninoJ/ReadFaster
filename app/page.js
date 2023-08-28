@@ -2,7 +2,10 @@
 
 import Image from 'next/image'
 import { useState, useRef } from 'react'
-import { Page, Text, View, Document, StyleSheet, render, PDFViewer, PDFDownloadLink, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, render, PDFViewer, PDFDownloadLink, Font, BlobProvider, pdf } from '@react-pdf/renderer';
+import { Syne } from 'next/font/google';
+const syne = Syne({ subsets: ['latin'] });
+
 import Link from 'next/link';
 Font.register({
   family: 'Inter',
@@ -49,7 +52,7 @@ export default function Home() {
 
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
-  const [pdf, setPdf] = useState(null);
+  const [blob, setBlob] = useState(null);
   const [pdfResult, setPdfResult] = useState(null);
   const [pdfLink, setPdfLink] = useState(null);
   const [fontSize, setFontSize] = useState(10);
@@ -59,14 +62,14 @@ export default function Home() {
   const resultRef = useRef();
 
   //Generate PDF using output and ReactPDF
-  function generatePDF(e) {
+  async function generatePDF(e) {
     e.preventDefault();
     //Add result to PDF
 
     // Convert result in a way that ReactPDF can read.
     // Convert <span className='font-bold'></span> to <Text></Text>
 
-    setPdf(
+    const document = await pdf(
       < Document >
         < Page size="A4"
         >
@@ -87,23 +90,17 @@ export default function Home() {
             >
               Testo generato con RICCARDOZUNINOJ.NINJA/READFAST
             </Text>
-            {pdfResult}
+            <View style={{
+              fontSize: `${fontSize}px`,
+            }}>
+              {pdfResult}
+            </View>
           </View>
         </Page >
       </Document >
-    )
+    ).toBlob();
 
-
-    setPdfLink(
-      <PDFDownloadLink
-        document={pdf}
-        fileName="result.pdf"
-
-      >
-        Download
-      </PDFDownloadLink>
-
-    )
+    window.open(URL.createObjectURL(document));
 
   }
 
@@ -115,12 +112,13 @@ export default function Home() {
     //Split the text into an array
     const lines = text.split('\n')
     const output = lines.map((line) => {
-      if (line === '\n')
-        return '<br/>';
+      if (line === '')
+        return <br></br>;
       return (
         <p
-          key={line}
-
+          key={
+            line + Math.random()
+          }
         >
           {
             //Split the line into an array
@@ -129,13 +127,14 @@ export default function Home() {
               return (
                 <span>
                   <span
-                    key={word}
+
                     className='font-bold'
                   >
                     {word.slice(0, Math.ceil(word.length / 3))}
                   </span>
                   <span
-                    key={word}
+
+                    className="font-light"
                   >
                     {word.slice(Math.ceil(word.length / 3))} {" "}
                   </span>
@@ -148,20 +147,22 @@ export default function Home() {
     })
 
     const pdfOutput = lines.map((line) => {
+      if (line === '')
+        return <Text>{'\n'}</Text>;
       return (
         <Text>
           {
             //Split the line into an array
             line.split(' ').map((word) => {
               return (
-                <Text style={{ fontSize: `${fontSize}px` }}>
+                <Text>
                   <Text
                     style={{ fontFamily: 'Inter', fontWeight: '800' }}
                   >
                     {word.slice(0, Math.ceil(word.length / 3))}
                   </Text>
                   <Text
-                    key={word}
+
                   >
                     {word.slice(Math.ceil(word.length / 3))} {" "}
                   </Text>
@@ -192,49 +193,27 @@ export default function Home() {
           This project is open source, so feel free to contribute on my GitHub page.
         </span>
       </div>
-      <div className="p-10">
+      <div className="px-10">
         <h1 className='
-        font-bold text-3xl
-      '>
+        font-bold text-3xl text-center mx-auto mt-8
+      '
+
+        >
           <span className='font-bold text-lg'>RICCARDOZUNINOJ.NINJA/READFAST</span>
           <span className="bg-purple-500 p-2 text-white text-sm mx-2 rounded-xl">v0.1 Beta version</span>
           <br></br>
-          Read faster, using "bold" techniques.</h1>
+          <p
+            className={syne.className + " text-5xl mt-3 mb-4"}
+          >
+            Read faster, using "bold" techniques.<br></br>
+            For free.
+          </p>
+        </h1>
         <hr></hr>
 
-        <div
-          className='mt-10'
-        >
-          <h1 className='font-bold'>How does it work?</h1>
-          <p>
-            This tool makes the start of each word bold.
-            In this way you can be able to understand the word without reading the whole word.
-          </p>
-          <h1 className='font-bold'>How to use it?</h1>
-          <p>
-            Just enter the text and click on the button (or do not, it will convert automatically 😊).
-          </p>
-          <h1 className='font-bold text-orange-500'>Do you think this is useful?</h1>
-          <Link
-            href="https://www.buymeacoffee.com/riccardozuninoj">
-            <button className='
-          bg-orange-500
-          text-white
-          font-bold
-          py-2
-          px-4
-          rounded
-          
-        '
 
-            >
-              Donate (Buy me a coffee)
-            </button>
-          </Link>
-        </div>
         <div className='mt-10'>
 
-          <hr></hr>
 
           <div className='mt-10 flex w-full'>
             <div
@@ -283,8 +262,8 @@ export default function Home() {
                       Font size
                       <input type="number" className="rounded-xl ml-4" min="10" max="50" value={fontSize} onChange={(e) => setFontSize(e.target.value)} />
                     </p>
-                    <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                      Export as Markdown
+                    <button disabled type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-900 hover:bg-gray-800">
+                      Export as Markdown (disabled)
                     </button>
                   </div>
                 </div>
@@ -292,9 +271,48 @@ export default function Home() {
 
             </div>
           </div>
-          {pdfLink}
+          {pdfLink} {blob}
+        </div>
+        <div
+          className='mt-10'
+        >
+          <hr></hr>
+          <h1 className='font-bold mt-4'>How does it work?</h1>
+          <p>
+            This tool makes the start of each word bold.
+            In this way you can be able to understand the word without reading the whole word.
+          </p>
+          <h1 className='font-bold'>How to use it?</h1>
+          <p>
+            Just enter the text and click on the button (or do not, it will convert automatically 😊).
+          </p>
+          <h1 className='font-bold text-orange-500'>Do you think this is useful?</h1>
+          <Link
+            href="https://www.buymeacoffee.com/riccardozuninoj">
+            <button className='
+          bg-orange-500
+          text-white
+          font-bold
+          py-2
+          px-4
+          rounded
+          
+        '
+
+            >
+              Donate (Buy me a coffee)
+            </button>
+          </Link>
         </div>
       </div >
+      <div className='mt-20'>
+        <hr></hr>
+
+        <h1 className='font-bold text-center mt-10'>Made with <span className='text-red-500'>♥</span> by RiccardoZuninoJ.</h1>
+        <p className='text-center'>Contribute on <Link href="https://github.com/RiccardoZuninoJ/ReadFaster">GitHub</Link>
+        </p>
+      </div >
+
     </div >
   )
 }
