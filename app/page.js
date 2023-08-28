@@ -1,12 +1,14 @@
 "use client";
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Page, Text, View, Document, StyleSheet, render, PDFViewer, PDFDownloadLink, Font, BlobProvider, pdf } from '@react-pdf/renderer';
 import { Syne } from 'next/font/google';
 const syne = Syne({ subsets: ['latin'] });
+import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
 
 import Link from 'next/link';
+import { initGA } from './ga-utils';
 Font.register({
   family: 'Inter',
   fonts: [
@@ -50,7 +52,23 @@ Font.register({
 });
 export default function Home() {
 
+  const acceptCookiesHandler = () => {
+    if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
+      initGA(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
+    }
+  }
 
+  const declineCookieHandler = () => {
+    Cookies.remove("_ga");
+    Cookies.remove("_gat");
+    Cookies.remove("_gid");
+  }
+  useEffect(() => {
+    const isConsent = getCookieConsentValue();
+    if (isConsent === "true") {
+      acceptCookiesHandler();
+    }
+  }, []);
 
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
@@ -89,7 +107,7 @@ export default function Home() {
                 color: '#010101',
               }}
             >
-              Generated using RICCARDOZUNINOJ.NINJA/READFAST.
+              Generated using READFASTER.RICCARDOZUNINOJ.NINJA.
               Donate to remove the watermark.
             </Text>
             <View style={{
@@ -215,7 +233,7 @@ export default function Home() {
           fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" >
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
         </svg>
-        <span className='font-bold text-white ml-2'>READFAST is still under development and is released as a beta. Many bugs can occur and will be fixed.
+        <span className='font-bold text-white ml-2'>READFASTER is still under development and is released as a beta. Many bugs can occur and will be fixed.
           This project is open source, so feel free to contribute on my GitHub page.
         </span>
       </div>
@@ -225,8 +243,8 @@ export default function Home() {
       '
 
         >
-          <p className='font-bold text-sm'>RICCARDOZUNINOJ.NINJA/READFAST</p>
-          <span className="bg-purple-500 p-2 text-white text-sm mx-2 rounded-xl">v0.1 Beta version</span>
+          <p className='font-bold text-sm'>READFASTER.RICCARDOZUNINOJ.NINJA</p>
+          <span className="bg-purple-500 p-2 text-white text-sm mx-2 rounded-xl">v0.2 Beta version</span>
           <br></br>
           <p
             className={syne.className + " text-5xl mt-3 mb-4"}
@@ -275,7 +293,6 @@ export default function Home() {
               <div>
                 <div class="w-full mb-4 border border-gray-200 rounded-r-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                   <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-                    <label for="output" class="sr-only">Your comment</label>
                     <div
 
                       style={{ fontSize: `${fontSize}px` }}
@@ -337,14 +354,21 @@ export default function Home() {
           </Link>
         </div>
       </div >
-      <div className='mt-20'>
+      <div className='mt-20 pb-10'>
         <hr></hr>
 
         <h1 className='font-bold text-center mt-10'>Made with <span className='text-red-500'>♥</span> by RiccardoZuninoJ.</h1>
         <p className='text-center'>Contribute on <Link href="https://github.com/RiccardoZuninoJ/ReadFaster">GitHub</Link>
         </p>
       </div >
+      <CookieConsent enableDeclineButton
+        onAccept={acceptCookiesHandler}
+        onDecline={declineCookieHandler}
 
+      >
+        This website uses cookies to ensure you get the best experience on our website.
+
+      </CookieConsent>
     </div >
   )
 }
