@@ -88,12 +88,25 @@ export default function Home() {
                 color: '#010101',
               }}
             >
-              Testo generato con RICCARDOZUNINOJ.NINJA/READFAST
+              Generated using RICCARDOZUNINOJ.NINJA/READFAST.
+              Donate to remove the watermark.
             </Text>
             <View style={{
               fontSize: `${fontSize}px`,
             }}>
               {pdfResult}
+              <Text
+                style={{
+                  fontSize: '10px',
+                  textAlign: 'center',
+                  marginBottom: '20px',
+                  fontFamily: 'Inter',
+                  color: '#010101',
+                }}
+              >
+                Generated using RICCARDOZUNINOJ.NINJA/READFAST.
+                Donate to remove the watermark.
+              </Text>
             </View>
           </View>
         </Page >
@@ -111,21 +124,25 @@ export default function Home() {
     //First 1/5 letters of each word must be made bold. the entire text is then put on result
     //Split the text into an array
     const lines = text.split('\n')
-    const output = lines.map((line) => {
+    const output = lines.map((line, index) => {
       if (line === '')
-        return <br></br>;
+        return <br key={index}></br>;
       return (
         <p
           key={
-            line + Math.random()
+            index
           }
         >
           {
             //Split the line into an array
-            line.split(' ').map((word) => {
+            line.split(' ').map((word, index) => {
 
               return (
-                <span>
+                <span
+                  key={
+                    word + index
+                  }
+                >
                   <span
 
                     className='font-bold'
@@ -146,16 +163,22 @@ export default function Home() {
       )
     })
 
-    const pdfOutput = lines.map((line) => {
+    const pdfOutput = lines.map((line, index) => {
       if (line === '')
-        return <Text>{'\n'}</Text>;
+        return <Text
+          key={index}
+        >{'\n'}</Text>;
       return (
         <Text>
           {
             //Split the line into an array
-            line.split(' ').map((word) => {
+            line.split(' ').map((word, index) => {
               return (
-                <Text>
+                <Text
+                  key={
+                    word + index
+                  }
+                >
                   <Text
                     style={{ fontFamily: 'Inter', fontWeight: '800' }}
                   >
@@ -205,7 +228,7 @@ export default function Home() {
           <p
             className={syne.className + " text-5xl mt-3 mb-4"}
           >
-            Read faster, using "bold" techniques.<br></br>
+            Read faster, using &quot;bold&quot; techniques.<br></br>
             For free.
           </p>
         </h1>
