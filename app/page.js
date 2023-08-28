@@ -50,6 +50,8 @@ Font.register({
 });
 export default function Home() {
 
+
+
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
   const [blob, setBlob] = useState(null);
@@ -57,7 +59,6 @@ export default function Home() {
   const [pdfLink, setPdfLink] = useState(null);
   const [fontSize, setFontSize] = useState(10);
   const [rows, setRows] = useState(5);
-
   const textRef = useRef();
   const resultRef = useRef();
 
@@ -214,8 +215,6 @@ export default function Home() {
           fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" >
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
         </svg>
-
-
         <span className='font-bold text-white ml-2'>READFAST is still under development and is released as a beta. Many bugs can occur and will be fixed.
           This project is open source, so feel free to contribute on my GitHub page.
         </span>
@@ -226,7 +225,7 @@ export default function Home() {
       '
 
         >
-          <span className='font-bold text-lg'>RICCARDOZUNINOJ.NINJA/READFAST</span>
+          <p className='font-bold text-sm'>RICCARDOZUNINOJ.NINJA/READFAST</p>
           <span className="bg-purple-500 p-2 text-white text-sm mx-2 rounded-xl">v0.1 Beta version</span>
           <br></br>
           <p
@@ -242,26 +241,32 @@ export default function Home() {
         <div className='mt-10'>
 
 
-          <div className='mt-10 flex w-full'>
+          <div className='mt-10 w-full lg:flex'>
             <div
-              className='flex-1'
+              className='sm:flex-wrap lg:flex-1'
             >
-              <div class="px-4 py-2 bg-white rounded-l-lg dark:bg-gray-800 border border-gray-200">
+              <div class="px-4 py-2 bg-white lg:rounded-l-lg dark:bg-gray-800 border border-gray-200">
                 <label htmlFor="input" class="sr-only">Insert your text here...</label>
                 <textarea
                   ref={textRef}
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value);
-                    convertText(e);
                   }}
                   id="input" rows={rows} class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Insert your text here" required></textarea>
+                <div class="flex items-center justify-between py-2 border-t dark:border-gray-600">
+                  <button className=
+                    'w-full items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'
+                    onClick={
+                      (e) => convertText(e)
+                    }
+                  >
+                    Convert your text
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={(e) => convertText(e)}
-                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                Convert
-              </button>
+
+
             </div>
             <div
               className='flex-1'
