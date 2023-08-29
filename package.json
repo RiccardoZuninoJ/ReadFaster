@@ -20,6 +20,7 @@
     "react-cookie-consent": "^8.0.1",
     "react-dom": "18.2.0",
     "react-ga": "^3.3.1",
+    "react-ga4": "^2.1.0",
     "react-pdf": "^7.3.3",
     "tailwindcss": "3.3.3"
   },

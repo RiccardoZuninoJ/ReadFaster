@@ -8,7 +8,7 @@ const syne = Syne({ subsets: ['latin'] });
 import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
 
 import Link from 'next/link';
-import { initGA } from './ga-utils';
+import { initGA, logPageView } from './ga-utils';
 Font.register({
   family: 'Inter',
   fonts: [
@@ -67,8 +67,18 @@ export default function Home() {
     const isConsent = getCookieConsentValue();
     if (isConsent === "true") {
       acceptCookiesHandler();
+    } else {
+      declineCookieHandler();
     }
+
   }, []);
+
+  // Log page view
+  useEffect(() => {
+    if (getCookieConsentValue() === "true") {
+      logPageView();
+    }
+  });
 
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
