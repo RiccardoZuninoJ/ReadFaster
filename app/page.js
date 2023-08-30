@@ -76,6 +76,8 @@ export default function Home() {
   // Log page view
   useEffect(() => {
     if (getCookieConsentValue() === "true") {
+      console.log("Cookies are accepted");
+      initGA(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
       logPageView();
     }
   });
@@ -273,16 +275,16 @@ export default function Home() {
             <div
               className='sm:flex-wrap lg:flex-1'
             >
-              <div class="px-4 py-2 bg-white lg:rounded-l-lg dark:bg-gray-800 border border-gray-200">
-                <label htmlFor="input" class="sr-only">Insert your text here...</label>
+              <div className="px-4 py-2 bg-white lg:rounded-l-lg dark:bg-gray-800 border border-gray-200">
+                <label htmlFor="input" className="sr-only">Insert your text here...</label>
                 <textarea
                   ref={textRef}
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value);
                   }}
-                  id="input" rows={rows} class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Insert your text here" required></textarea>
-                <div class="flex items-center justify-between py-2 border-t dark:border-gray-600">
+                  id="input" rows={rows} className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Insert your text here" required></textarea>
+                <div className="flex items-center justify-between py-2 border-t dark:border-gray-600">
                   <button className=
                     'w-full items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'
                     onClick={
@@ -301,27 +303,27 @@ export default function Home() {
             >
 
               <div>
-                <div class="w-full mb-4 border border-gray-200 rounded-r-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                  <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+                <div className="w-full mb-4 border border-gray-200 rounded-r-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                  <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                     <div
 
                       style={{ fontSize: `${fontSize}px` }}
-                      id="output" rows="4" class="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Output" required>
+                      id="output" rows="4" className="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Output" required>
 
                       {result}
                     </div>
                   </div>
-                  <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+                  <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
                     <button onClick={
                       (e) => generatePDF(e)
-                    } class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                    } className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                       Export as PDF
                     </button>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
                       Font size
                       <input type="number" className="rounded-xl ml-4" min="10" max="50" value={fontSize} onChange={(e) => setFontSize(e.target.value)} />
                     </p>
-                    <button disabled type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-900 hover:bg-gray-800">
+                    <button disabled type="submit" className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-900 hover:bg-gray-800">
                       Export as Markdown (disabled)
                     </button>
                   </div>
